@@ -1,0 +1,528 @@
+/* =================================================================
+   PanelFlow Electricals — Public landing page theme
+   Royal plum / burgundy + warm ivory + antique gold accents
+   Scoped to .pf-public so Desk/other portals are not affected.
+   Cormorant Garamond (serif) for headings, DM Sans for body.
+   ================================================================= */
+
+/* ---- Google Fonts: Cormorant Garamond + DM Sans (self-hosted fallback chain) ---- */
+/* ---- CSS custom properties (royal-plum palette) ---- */
+:root {
+  --pf-plum:        #3D1A47;   /* deep royal plum — primary nav / headings */
+  --pf-burgundy:    #6B1A3A;   /* burgundy — hover, cta */
+  --pf-gold:        #B8963E;   /* antique gold — accents, kickers */
+  --pf-gold-light:  #D4AE5A;   /* lighter gold */
+  --pf-ivory:       #FAF7F2;   /* warm ivory — backgrounds */
+  --pf-ivory-mid:   #F0EBE3;   /* slightly deeper ivory */
+  --pf-cream:       #E8E0D5;   /* border / divider */
+  --pf-charcoal:    #1E1A1E;   /* primary text */
+  --pf-mid:         #5A5056;   /* secondary text */
+  --pf-light:       #9A9096;   /* muted text */
+}
+
+/* ---- Suppress Frappe nav on public page ---- */
+body:has(.pf-public) > .navbar,
+body:has(.pf-public) nav.navbar,
+body:has(.pf-public) .web-footer { display: none !important; }
+body:has(.pf-public) { background: var(--pf-ivory); color: var(--pf-charcoal); }
+
+/* ---- Layout shell ---- */
+.pf-public {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 5vw;
+}
+
+/* ========== HEADER ========== */
+.pf-public-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--pf-cream);
+}
+
+.pf-brand-mark {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--pf-plum);
+}
+
+.pf-brand-emblem {
+  width: 44px;
+  height: 44px;
+  background: var(--pf-plum);
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.pf-brand-emblem svg {
+  width: 26px;
+  height: 26px;
+  fill: var(--pf-gold);
+}
+
+.pf-brand-text strong {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  color: var(--pf-plum);
+}
+
+.pf-brand-text span {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: var(--pf-gold);
+  margin-top: 3px;
+}
+
+.pf-public-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.pf-public-nav a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--pf-mid);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.pf-public-nav a:hover { color: var(--pf-plum); }
+
+.pf-nav-signin {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: var(--pf-plum);
+  color: #fff !important;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.pf-nav-signin:hover { background: var(--pf-burgundy); color: #fff !important; }
+
+/* ========== HERO ========== */
+.pf-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 8%;
+  padding: 80px 0 70px;
+}
+
+.pf-hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--pf-gold);
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.pf-hero-kicker::before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 2px;
+  background: var(--pf-gold);
+}
+
+.pf-hero h1 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: clamp(44px, 5.5vw, 76px);
+  font-weight: 600;
+  line-height: 1.07;
+  color: var(--pf-plum);
+  margin: 0 0 22px;
+}
+
+.pf-hero h1 em {
+  font-style: italic;
+  color: var(--pf-burgundy);
+}
+
+.pf-hero-sub {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--pf-mid);
+  max-width: 440px;
+  margin: 0 0 36px;
+}
+
+.pf-hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.pf-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 15px 30px;
+  background: var(--pf-plum);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.1s;
+  border: none;
+  cursor: pointer;
+}
+
+.pf-btn-primary:hover {
+  background: var(--pf-burgundy);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.pf-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 26px;
+  background: transparent;
+  color: var(--pf-plum);
+  border: 1.5px solid var(--pf-plum);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.pf-btn-ghost:hover {
+  background: var(--pf-plum);
+  color: #fff;
+}
+
+/* Hero photograph panel */
+.pf-hero-visual {
+  position: relative;
+}
+
+.pf-hero-photo {
+  width: 100%;
+  height: 460px;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+  /* Fallback if no image: show elegant gradient panel */
+  background: linear-gradient(135deg, var(--pf-plum) 0%, #5C2D6E 40%, var(--pf-burgundy) 100%);
+}
+
+.pf-hero-photo-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: linear-gradient(to top, rgba(61,26,71,0.4) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.pf-hero-caption {
+  margin-top: 12px;
+  font-size: 11px;
+  color: var(--pf-light);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pf-hero-caption::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 1px;
+  background: var(--pf-light);
+}
+
+/* Stats strip below hero */
+.pf-stats-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--pf-cream);
+  border: 1px solid var(--pf-cream);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 0 0 70px;
+}
+
+.pf-stat {
+  background: var(--pf-ivory);
+  padding: 24px 28px;
+  text-align: center;
+}
+
+.pf-stat-value {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--pf-plum);
+  line-height: 1;
+}
+
+.pf-stat-label {
+  display: block;
+  font-size: 12px;
+  color: var(--pf-mid);
+  margin-top: 6px;
+}
+
+/* ========== JOURNEY SECTION ========== */
+.pf-journey {
+  padding: 70px 0;
+  border-top: 1px solid var(--pf-cream);
+}
+
+.pf-section-kicker {
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--pf-gold);
+  font-weight: 600;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pf-section-kicker::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 2px;
+  background: var(--pf-gold);
+}
+
+.pf-journey h2 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: clamp(32px, 3.5vw, 50px);
+  font-weight: 600;
+  color: var(--pf-plum);
+  margin: 0 0 14px;
+  line-height: 1.1;
+}
+
+.pf-journey-intro {
+  font-size: 15px;
+  color: var(--pf-mid);
+  max-width: 560px;
+  line-height: 1.7;
+  margin: 0 0 50px;
+}
+
+.pf-journey-steps {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0;
+  position: relative;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 50px;
+}
+
+/* connector line */
+.pf-journey-steps::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  height: 2px;
+  background: linear-gradient(to right, var(--pf-gold), var(--pf-plum));
+  z-index: 0;
+}
+
+.pf-step {
+  position: relative;
+  z-index: 1;
+  padding: 0 10px;
+  text-align: center;
+}
+
+.pf-step-node {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--pf-plum);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--pf-gold);
+  border: 3px solid var(--pf-ivory);
+  box-shadow: 0 0 0 2px var(--pf-plum);
+}
+
+.pf-step-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--pf-gold);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.pf-step-title {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--pf-plum);
+}
+
+.pf-step-desc {
+  display: block;
+  font-size: 11px;
+  color: var(--pf-mid);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* ========== MODULES GRID ========== */
+.pf-modules {
+  padding: 0 0 70px;
+}
+
+.pf-modules-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  gap: 20px;
+}
+
+.pf-modules-header h2 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: clamp(28px, 3vw, 42px);
+  color: var(--pf-plum);
+  margin: 0;
+  font-weight: 600;
+}
+
+.pf-module-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.pf-module-card {
+  background: #fff;
+  border: 1px solid var(--pf-cream);
+  border-radius: 12px;
+  padding: 28px 24px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.pf-module-card:hover {
+  border-color: var(--pf-gold);
+  box-shadow: 0 8px 24px rgba(61,26,71,0.08);
+}
+
+.pf-module-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(61,26,71,0.08);
+  display: grid;
+  place-items: center;
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+.pf-module-card h3 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--pf-plum);
+  margin: 0 0 10px;
+}
+
+.pf-module-card p {
+  font-size: 13px;
+  color: var(--pf-mid);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ========== FOOTER ========== */
+.pf-public-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 0;
+  border-top: 1px solid var(--pf-cream);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.pf-footer-brand {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  color: var(--pf-plum);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.pf-footer-links {
+  display: flex;
+  gap: 24px;
+}
+
+.pf-footer-links a {
+  font-size: 12px;
+  color: var(--pf-mid);
+  text-decoration: none;
+}
+
+.pf-footer-links a:hover { color: var(--pf-plum); }
+
+.pf-footer-copy {
+  font-size: 11px;
+  color: var(--pf-light);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+  .pf-module-grid { grid-template-columns: repeat(2, 1fr); }
+  .pf-journey-steps { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .pf-journey-steps::before { display: none; }
+}
+
+@media (max-width: 700px) {
+  .pf-hero { grid-template-columns: 1fr; padding: 44px 0 36px; gap: 32px; }
+  .pf-hero-photo { height: 260px; }
+  .pf-stats-strip { grid-template-columns: 1fr; }
+  .pf-journey-steps { grid-template-columns: repeat(2, 1fr); }
+  .pf-module-grid { grid-template-columns: 1fr; }
+  .pf-public-nav .pf-nav-link-hidden { display: none; }
+  .pf-modules-header { flex-direction: column; align-items: flex-start; }
+  .pf-public-footer { flex-direction: column; gap: 12px; }
+}

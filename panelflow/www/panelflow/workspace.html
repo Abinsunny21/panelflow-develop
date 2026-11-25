@@ -1,0 +1,138 @@
+{% extends "templates/web.html" %}
+{% block title %}PanelFlow ERP{% endblock %}
+{% block head_include %}
+<link rel="stylesheet" href="/assets/panelflow/css/portal.css?v=43">
+{% endblock %}
+{% block page_content %}
+<!-- CSRF token available to all JS as a meta tag -->
+<meta name="csrf-token" content="{{ csrf_token | e }}">
+
+<div id="pf-portal" class="pf-app" data-user="{{ user | e }}">
+
+  <!-- Accessibility skip link -->
+  <a class="pf-skip" href="#pf-main">Skip to main content</a>
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="pf-sidebar" id="pf-sidebar" aria-label="PanelFlow navigation">
+
+    <a class="pf-brand" href="/panelflow" aria-label="PanelFlow home">
+      <div class="pf-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#B8963E">
+          <path d="M13 2L4.5 13.5H11L10 22L19.5 10.5H13L13 2Z"/>
+        </svg>
+      </div>
+      <div class="pf-brand-info">
+        <b>PanelFlow</b>
+        <small>ERP workspace</small>
+      </div>
+    </a>
+
+    <div class="pf-nav-label" aria-hidden="true">Workspaces</div>
+    <nav id="pf-workspaces" class="pf-nav" aria-label="Workspaces">
+      <div class="pf-skeleton">Loading your workspaces…</div>
+    </nav>
+
+    <div class="pf-nav-label" aria-hidden="true">Tools</div>
+    <nav class="pf-nav" aria-label="Tools">
+      <a class="pf-nav-link" href="#reports" data-view="reports" id="pf-reports-link">
+        <span class="pf-nav-icon" aria-hidden="true">▤</span>
+        Reports
+      </a>
+      <a class="pf-nav-link" href="#/search" data-view="search">
+        <span class="pf-nav-icon" aria-hidden="true">⌕</span>
+        Search
+      </a>
+    </nav>
+
+    <div class="pf-side-foot">
+      <span class="pf-live-dot" aria-hidden="true"></span>
+      <span>Connected to Frappe</span>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN COLUMN ===== -->
+  <div class="pf-main-column">
+
+    <!-- TOPBAR -->
+    <header class="pf-topbar" role="banner">
+      <button
+        class="pf-menu-toggle"
+        id="pf-menu-toggle"
+        aria-label="Toggle navigation"
+        aria-controls="pf-sidebar"
+        aria-expanded="true"
+      >☰</button>
+
+      <div class="pf-breadcrumb" aria-label="Breadcrumb">
+        <span>PanelFlow</span>
+        <b aria-hidden="true">/</b>
+        <strong id="pf-current-title">Overview</strong>
+      </div>
+
+      <div class="pf-top-actions">
+        <!-- Bell notifications -->
+        <button
+          class="pf-icon-btn"
+          id="pf-bell"
+          aria-label="Notifications"
+          aria-expanded="false"
+          aria-controls="pf-notifications"
+        >
+          <span aria-hidden="true">🔔</span>
+          <i id="pf-unread" class="pf-unread" hidden aria-label="Unread notifications"></i>
+        </button>
+
+        <!-- User menu -->
+        <div class="pf-user-wrap">
+          <button
+            class="pf-user-button"
+            id="pf-user-button"
+            aria-expanded="false"
+            aria-haspopup="true"
+            aria-controls="pf-user-menu"
+          >
+            <span class="pf-avatar" id="pf-avatar" aria-hidden="true">P</span>
+            <span class="pf-user-name" id="pf-user-name">Loading…</span>
+            <span class="pf-chevron" aria-hidden="true">▾</span>
+          </button>
+
+          <div class="pf-user-menu" id="pf-user-menu" hidden role="menu" aria-label="User menu">
+            <a href="#/profile" role="menuitem">My account</a>
+            <button id="pf-signout" class="pf-menu-signout" type="button" role="menuitem">Sign out</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- NOTIFICATIONS PANEL -->
+    <section
+      class="pf-notifications"
+      id="pf-notifications"
+      hidden
+      aria-label="Notifications"
+      aria-live="polite"
+    >
+      <div class="pf-popover-head">
+        <strong>Notifications</strong>
+        <button id="pf-close-notifications" class="pf-close" aria-label="Close notifications">×</button>
+      </div>
+      <div id="pf-notification-list" role="list"></div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main id="pf-main" class="pf-content" tabindex="-1" aria-live="polite" aria-atomic="false">
+      <div class="pf-skeleton pf-loading">Preparing your workspace…</div>
+    </main>
+
+    <!-- TOAST CONTAINER -->
+    <div class="pf-toast-wrap" id="pf-toast-wrap" aria-live="polite" aria-atomic="false"></div>
+  </div>
+
+</div>
+{% endblock %}
+{% block script %}
+{{ super() }}
+<script src="/assets/panelflow/js/forms.js?v=42"></script>
+<script src="/assets/panelflow/js/workspaces.js?v=42"></script>
+<script src="/assets/panelflow/js/portal.js?v=44"></script>
+{% endblock %}

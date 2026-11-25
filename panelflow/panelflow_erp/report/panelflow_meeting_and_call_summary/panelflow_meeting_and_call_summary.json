@@ -1,0 +1,18 @@
+{
+ "doctype": "Report",
+ "name": "PanelFlow Meeting and Call Summary",
+ "report_name": "PanelFlow Meeting and Call Summary",
+ "ref_doctype": "Event",
+ "module": "PanelFlow ERP",
+ "report_type": "Script Report",
+ "is_standard": "Yes",
+ "disabled": 0,
+ "roles": [
+  {
+   "role": "Sales User"
+  },
+  {
+   "role": "Sales Manager"
+  }
+ ]
+}

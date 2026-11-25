@@ -1,0 +1,195 @@
+{% extends "templates/web.html" %}
+{% block title %}PanelFlow Electricals — From Enquiry to Delivery{% endblock %}
+{% block head_include %}
+<link rel="stylesheet" href="/assets/panelflow/css/public.css?v=40">
+<meta name="description" content="PanelFlow Electricals — The connected operational portal for electrical panel manufacturing. Sales, purchasing and production in one place.">
+<style>
+  /* Inline SVG icon for the brand emblem (lightning bolt) */
+  .pf-brand-emblem svg,.pf-login-emblem svg { display:block; }
+</style>
+{% endblock %}
+{% block page_content %}
+<div class="pf-public">
+
+  <!-- ===== HEADER ===== -->
+  <header class="pf-public-header">
+    <a href="/panelflow" class="pf-brand-mark" aria-label="PanelFlow home">
+      <div class="pf-brand-emblem" aria-hidden="true">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 2L4.5 13.5H11L10 22L19.5 10.5H13L13 2Z"/>
+        </svg>
+      </div>
+      <div class="pf-brand-text">
+        <strong>PanelFlow</strong>
+        <span>Electricals</span>
+      </div>
+    </a>
+    <nav class="pf-public-nav" aria-label="Site navigation">
+      <a href="#journey" class="pf-nav-link-hidden">How work connects</a>
+      <a href="#modules" class="pf-nav-link-hidden">What we cover</a>
+      {% if signed_in %}
+      <a href="/panelflow/workspace" class="pf-nav-signin">Open workspace →</a>
+      {% else %}
+      <a href="/panelflow/login" class="pf-nav-signin">Staff sign in →</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <main>
+    <section class="pf-hero" aria-label="Welcome">
+      <div class="pf-hero-content">
+        <p class="pf-hero-kicker">From enquiry to energized systems</p>
+        <h1>Built to connect.<br><em>Made to deliver.</em></h1>
+        <p class="pf-hero-sub">One connected workspace for the people who quote, procure, build and ship electrical panels. Every handover in one place — no gaps, no duplicated work.</p>
+        <div class="pf-hero-actions">
+          {% if signed_in %}
+          <a href="/panelflow/workspace" class="pf-btn-primary">Open my workspace →</a>
+          {% else %}
+          <a href="/panelflow/login" class="pf-btn-primary">Staff sign in →</a>
+          <a href="#journey" class="pf-btn-ghost">See how it works</a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="pf-hero-visual">
+        <!--
+          Production-ready photo: replace src below with an owned / CC-licensed
+          photograph of an electrical switchgear assembly floor or control panel cabinet.
+          Suggested sources (CC-BY or purchased):
+            Wikimedia Commons: "Electrical control panel"
+            Unsplash (license: Unsplash license, free for commercial use)
+          Current placeholder: deep royal-plum gradient panel.
+          Save your image to /assets/panelflow/images/panelflow/panel-assembly.jpg
+          and update src accordingly.
+          Alt text below is ready for the photo.
+        -->
+        <div class="pf-hero-photo-wrap">
+          <img
+            src="/assets/panelflow/images/panel-floor.svg"
+            alt="Electrical control panel assembly floor showing rows of switchgear cabinets with copper busbars, circuit breakers and wiring harnesses being assembled by technicians"
+            class="pf-hero-photo"
+            width="700"
+            height="460"
+            loading="eager"
+          >
+          <div class="pf-hero-photo-overlay" aria-hidden="true"></div>
+        </div>
+        <p class="pf-hero-caption">Electrical panel manufacturing · A connected operation</p>
+      </div>
+    </section>
+
+    <!-- ===== JOURNEY STEPS ===== -->
+    <section class="pf-journey" id="journey" aria-labelledby="journey-heading">
+      <p class="pf-section-kicker">One continuous journey</p>
+      <h2 id="journey-heading">Every handover, connected.</h2>
+      <p class="pf-journey-intro">Sales, purchasing and production teams work with the same records, approvals and material requirements — from first enquiry through final delivery.</p>
+
+      <ol class="pf-journey-steps" aria-label="Workflow stages">
+        <li class="pf-step">
+          <div class="pf-step-node" aria-hidden="true">01</div>
+          <span class="pf-step-label">Stage 1</span>
+          <span class="pf-step-title">Enquiry</span>
+          <span class="pf-step-desc">Lead capture, source &amp; territory assignment</span>
+        </li>
+        <li class="pf-step">
+          <div class="pf-step-node" aria-hidden="true">02</div>
+          <span class="pf-step-label">Stage 2</span>
+          <span class="pf-step-title">Quotation</span>
+          <span class="pf-step-desc">Pricing, approval workflow &amp; dispatch</span>
+        </li>
+        <li class="pf-step">
+          <div class="pf-step-node" aria-hidden="true">03</div>
+          <span class="pf-step-label">Stage 3</span>
+          <span class="pf-step-title">Order</span>
+          <span class="pf-step-desc">Sales Order confirmation &amp; BOM planning</span>
+        </li>
+        <li class="pf-step">
+          <div class="pf-step-node" aria-hidden="true">04</div>
+          <span class="pf-step-label">Stage 4</span>
+          <span class="pf-step-title">Procurement</span>
+          <span class="pf-step-desc">RFQ, supplier offers &amp; tiered PO approval</span>
+        </li>
+        <li class="pf-step">
+          <div class="pf-step-node" aria-hidden="true">05</div>
+          <span class="pf-step-label">Stage 5</span>
+          <span class="pf-step-title">Production</span>
+          <span class="pf-step-desc">Work Orders, stock movements &amp; BOM tracking</span>
+        </li>
+        <li class="pf-step">
+          <div class="pf-step-node" aria-hidden="true">06</div>
+          <span class="pf-step-label">Stage 6</span>
+          <span class="pf-step-title">Delivery</span>
+          <span class="pf-step-desc">Delivery Notes, invoicing &amp; payment</span>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ===== MODULES GRID ===== -->
+    <section class="pf-modules" id="modules" aria-labelledby="modules-heading">
+      <div class="pf-modules-header">
+        <div>
+          <p class="pf-section-kicker">What PanelFlow covers</p>
+          <h2 id="modules-heading">Every team. One portal.</h2>
+        </div>
+      </div>
+
+      <div class="pf-module-grid">
+        <div class="pf-module-card">
+          <div class="pf-module-icon" aria-hidden="true">📋</div>
+          <h3>Sales &amp; CRM</h3>
+          <p>Leads, follow-up reminders, opportunity pipeline, quotation approvals, Sales Orders, delivery tracking and invoicing — all from one workspace.</p>
+        </div>
+
+        <div class="pf-module-card">
+          <div class="pf-module-icon" aria-hidden="true">🛒</div>
+          <h3>Purchase</h3>
+          <p>Material shortage alerts, RFQs, supplier offer comparison, tiered Purchase Order approvals, partial receipts and supplier invoice dues.</p>
+        </div>
+
+        <div class="pf-module-card">
+          <div class="pf-module-icon" aria-hidden="true">🏭</div>
+          <h3>Stock &amp; Manufacturing</h3>
+          <p>BOM stock checks, Sales Order material planning, Work Orders, real-time shortage visibility and controlled stock movements.</p>
+        </div>
+
+        <div class="pf-module-card">
+          <div class="pf-module-icon" aria-hidden="true">📊</div>
+          <h3>Reports</h3>
+          <p>Delivery tracking, salesperson targets, supplier quotation comparison, opportunity stage tracking and meeting summaries — with live filters.</p>
+        </div>
+
+        <div class="pf-module-card">
+          <div class="pf-module-icon" aria-hidden="true">🔔</div>
+          <h3>Notifications</h3>
+          <p>Permission-aware bell alerts for material shortages, workflow decisions and overdue items. Reading never triggers duplicate alerts.</p>
+        </div>
+
+        <div class="pf-module-card">
+          <div class="pf-module-icon" aria-hidden="true">🔍</div>
+          <h3>Global Search</h3>
+          <p>Search across all accessible document types and reports. Every result opens its portal page — no redirects to Desk.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="pf-public-footer">
+    <a href="/panelflow" class="pf-footer-brand">PanelFlow Electricals</a>
+    <div class="pf-footer-links">
+      <a href="#journey">How it works</a>
+      <a href="/panelflow/{% if signed_in %}workspace{% else %}login{% endif %}">Staff workspace</a>
+    </div>
+    <span class="pf-footer-copy">Enquiry to delivery.</span>
+  </footer>
+</div>
+{% endblock %}
+{% block script %}{{ super() }}
+<script>
+  // Redirect hash-based portal links from the public page
+  if (location.hash.startsWith('#/')) {
+    location.replace('/panelflow/workspace' + location.hash);
+  }
+</script>
+{% endblock %}

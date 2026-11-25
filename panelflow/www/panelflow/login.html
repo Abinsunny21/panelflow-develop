@@ -1,0 +1,134 @@
+{% extends "www/login.html" %}
+{% block head_include %}
+{{ super() }}
+<link rel="stylesheet" href="/assets/panelflow/css/login.css?v=40">
+<script>
+  // Preserve deep-link targets through Frappe's native redirect-to param
+  if (location.hash.startsWith('#/')) {
+    var target = '/panelflow/workspace' + location.hash;
+    var loginUrl = new URL(location.href);
+    loginUrl.searchParams.set('redirect-to', target);
+    loginUrl.hash = 'login';
+    history.replaceState(null, '', loginUrl);
+  }
+</script>
+{% endblock %}
+
+{% block page_content %}
+<div class="pf-login-composition">
+
+  <!-- ===== LEFT BRAND COLUMN ===== -->
+  <aside class="pf-login-story" aria-label="PanelFlow brand">
+    <a href="/panelflow" class="pf-login-story-brand" aria-label="PanelFlow home">
+      <div class="pf-login-emblem" aria-hidden="true">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+          <path d="M13 2L4.5 13.5H11L10 22L19.5 10.5H13L13 2Z"/>
+        </svg>
+      </div>
+      <div class="pf-login-story-name">
+        <strong>PanelFlow</strong>
+        <span>Electricals</span>
+      </div>
+    </a>
+
+    <div class="pf-login-headline">
+      <h1>Every connection<br><em>moves work forward.</em></h1>
+      <p>Sales, purchasing and production. One shared workspace for the people who build electrical panels.</p>
+    </div>
+
+    <div class="pf-login-photo-wrap" aria-hidden="true">
+      <!--
+        Industrial photograph: replace src with an owned / appropriately licensed
+        photograph of a switchgear cabinet interior, copper busbar detail or panel
+        assembly workstation.
+        Source suggestion: Wikimedia Commons "switchgear" (CC-BY) or Unsplash
+        (Unsplash license — free for commercial).
+        Save to /assets/panelflow/images/panelflow/switchgear-detail.jpg
+        Current fallback: deep plum gradient.
+      -->
+      <img
+        src="/assets/panelflow/images/panel-floor.svg"
+        alt="Detail of an open switchgear cabinet showing copper busbars, circuit breakers and cable trays — the precision of electrical panel assembly"
+        class="pf-login-photo"
+        width="380"
+        height="220"
+        loading="lazy"
+      >
+      <p class="pf-login-photo-caption">Authorized staff access only</p>
+    </div>
+
+    <div class="pf-login-story-foot">Connected to PanelFlow ERP</div>
+  </aside>
+
+  <!-- ===== RIGHT FORM COLUMN ===== -->
+  <!-- Frappe's native login form (from parent template) -->
+  <div class="pf-login-form">
+    {{ super() }}
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{{ super() }}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  // ---- Duplicate-submit prevention ----
+  if (window.login && login.call) {
+    var nativeCall = login.call, pending = false;
+    login.call = function () {
+      if (pending) return $.Deferred().reject().promise();
+      pending = true;
+      var $btns = $('.btn-login, .btn-forgot');
+      $btns.prop('disabled', true).addClass('disabled');
+      var request = nativeCall.apply(this, arguments);
+      request.always(function () {
+        pending = false;
+        $btns.prop('disabled', false).removeClass('disabled');
+      });
+      return request;
+    };
+  }
+
+  // ---- Password visibility toggle accessibility ----
+  var toggle = document.querySelector(".toggle-password");
+  if (toggle) {
+    toggle.setAttribute("role", "button");
+    toggle.setAttribute("tabindex", "0");
+    toggle.setAttribute("aria-label", "Show password");
+    toggle.addEventListener("keydown", function (event) {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggle.click();
+      }
+    });
+    toggle.addEventListener("click", function () {
+      var pwdInput = document.querySelector("#login_password");
+      if (pwdInput) {
+        var visible = pwdInput.type === "text";
+        toggle.setAttribute("aria-label", visible ? "Show password" : "Hide password");
+      }
+    });
+  }
+
+  // ---- Move focus to email field on load ----
+  var emailField = document.querySelector("#login_email, input[name='login_email']");
+  if (emailField) {
+    setTimeout(function() { emailField.focus(); }, 100);
+  }
+
+  // ---- Enter-to-submit (already native in HTML forms but guard for edge cases) ----
+  var loginForm = document.querySelector("form.form-signin");
+  if (loginForm) {
+    loginForm.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") {
+        var active = document.activeElement;
+        if (active && (active.tagName === "INPUT")) {
+          var submitBtn = loginForm.querySelector(".btn-login");
+          if (submitBtn && !submitBtn.disabled) submitBtn.click();
+        }
+      }
+    });
+  }
+});
+</script>
+{% endblock %}

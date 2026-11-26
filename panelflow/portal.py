@@ -139,16 +139,22 @@ def get_bootstrap():
         fields=["name", "ref_doctype", "module", "report_type", "prepared_report"],
         order_by="module asc, name asc", limit_page_length=0,
     ):
+        module = report.module
+        workspace = REPORT_WORKSPACES.get(module) or REPORT_DOCTYPE_WORKSPACES.get(report.ref_doctype)
+        if not workspace and report.ref_doctype:
+            doctype_module = frappe.get_meta(report.ref_doctype).module
+            workspace = REPORT_WORKSPACES.get(doctype_module)
+
+        if not workspace and module:
+            continue
+
         try:
             permitted_report = get_report_doc(report.name)
         except frappe.PermissionError:
             continue
 
-        module = report.module or permitted_report.module or "Other"
-        workspace = REPORT_WORKSPACES.get(module) or REPORT_DOCTYPE_WORKSPACES.get(report.ref_doctype)
-        if not workspace and report.ref_doctype:
-            doctype_module = frappe.get_meta(report.ref_doctype).module
-            workspace = REPORT_WORKSPACES.get(doctype_module)
+        module = module or permitted_report.module or "Other"
+        workspace = workspace or REPORT_WORKSPACES.get(module)
         if not workspace:
             continue
         reports.append({

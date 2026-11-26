@@ -304,7 +304,7 @@
               grid.className = "pf-editor-fields";
               for (const childField of childMeta.fields || []) {
                 if (childField.hidden || !supported.has(childField.fieldtype) || Number(childField.permlevel || 0) > 0) continue;
-                renderFieldInput(grid, childMeta, row, childField);
+                renderFieldInput(grid, childMeta, row, childField, doc);
               }
               block.appendChild(grid);
 
@@ -468,7 +468,7 @@
     return obj ? obj[key] : undefined;
   }
 
-  function renderFieldInput(container, metadata, targetDoc, field) {
+  function renderFieldInput(container, metadata, targetDoc, field, parentDoc = null) {
     const label = document.createElement("label");
     label.className = "pf-edit-field";
     label.innerHTML = `<span>${esc(field.label || prettyLabel(field.fieldname))}${field.reqd ? ' <strong style="color:var(--pf-danger)">*</strong>' : ""}</span>`;
@@ -525,30 +525,86 @@
 
     label.appendChild(input);
 
-    if (field.fieldname === "item_code" && metadata.name !== targetDoc.doctype) {
+    if (field.fieldname === "item_code" && parentDoc && metadata.name !== parentDoc.doctype) {
+      const itemFeedback = document.createElement("small");
+      itemFeedback.setAttribute("role", "alert");
+      itemFeedback.style.cssText = "display:block;color:var(--pf-danger);font-size:12px;margin-top:4px;";
+      label.appendChild(itemFeedback);
       input.addEventListener("change", async () => {
         if (!input.value) return;
+        const selectedItem = input.value;
+        targetDoc.item_code = selectedItem;
+        itemFeedback.textContent = "";
         try {
           let result;
-          if (targetDoc.doctype === "Stock Entry") {
+          if (parentDoc.doctype === "Stock Entry") {
             result = await apiCall("run_doc_method", { method: "get_item_details", docs: targetDoc, args: { item_code: input.value, qty: targetDoc.qty || 1 } }, true);
-          } else if (["BOM", "Work Order", "Request for Quotation"].includes(targetDoc.doctype)) {
+          } else if (["BOM", "Work Order", "Request for Quotation"].includes(parentDoc.doctype)) {
             const item = (await apiCall("frappe.client.get_value", { doctype: "Item", filters: { name: input.value }, fieldname: ["item_name", "description", "stock_uom"] })).message;
             result = { message: { item_name: item.item_name, description: item.description, uom: item.stock_uom, conversion_factor: 1 } };
           } else {
+            const args = {
+              item_code: selectedItem,
+              qty: targetDoc.qty || 1,
+              uom: targetDoc.uom,
+              conversion_factor: targetDoc.conversion_factor,
+              warehouse: targetDoc.warehouse,
+              set_warehouse: parentDoc.set_warehouse,
+              customer: parentDoc.customer || parentDoc.party_name,
+              quotation_to: parentDoc.quotation_to,
+              supplier: parentDoc.supplier,
+              currency: parentDoc.currency,
+              is_internal_supplier: parentDoc.is_internal_supplier,
+              is_internal_customer: parentDoc.is_internal_customer,
+              conversion_rate: parentDoc.conversion_rate || 1,
+              price_list: parentDoc.selling_price_list || parentDoc.buying_price_list,
+              price_list_currency: parentDoc.price_list_currency,
+              plc_conversion_rate: parentDoc.plc_conversion_rate,
+              company: parentDoc.company,
+              order_type: parentDoc.order_type,
+              is_pos: parentDoc.is_pos,
+              is_return: parentDoc.is_return,
+              return_against: parentDoc.return_against,
+              is_subcontracted: parentDoc.is_subcontracted,
+              ignore_pricing_rule: parentDoc.ignore_pricing_rule,
+              doctype: parentDoc.doctype,
+              name: parentDoc.name,
+              project: targetDoc.project || parentDoc.project,
+              net_rate: targetDoc.rate,
+              base_net_rate: targetDoc.base_net_rate,
+              stock_qty: targetDoc.stock_qty,
+              weight_per_unit: targetDoc.weight_per_unit,
+              weight_uom: targetDoc.weight_uom,
+              manufacturer: targetDoc.manufacturer,
+              stock_uom: targetDoc.stock_uom,
+              cost_center: targetDoc.cost_center,
+              tax_category: parentDoc.tax_category,
+              item_tax_template: targetDoc.item_tax_template,
+              child_doctype: targetDoc.doctype,
+              child_docname: targetDoc.name,
+              is_old_subcontracting_flow: parentDoc.is_old_subcontracting_flow,
+            };
             result = await apiCall("erpnext.stock.get_item_details.get_item_details", {
-              args: { ...targetDoc, item_code: input.value, qty: targetDoc.qty || 1, conversion_rate: targetDoc.conversion_rate || 1 },
-              doc: targetDoc,
+              args,
+              doc: parentDoc,
             }, true);
           }
-          if (result?.message) {
-            Object.assign(targetDoc, result.message);
-            Object.entries(result.message).forEach(([key, value]) => {
-              const related = container.querySelector(`[data-fieldname="${key}"]`);
-              if (related) related.value = value ?? "";
-            });
-          }
-        } catch (_) {}
+          if (input.value !== selectedItem) return;
+          if (!result?.message) throw new Error("No item details were returned.");
+          Object.assign(targetDoc, result.message);
+          Object.entries(result.message).forEach(([key, value]) => {
+            const related = container.querySelector(`[data-fieldname="${key}"]`);
+            if (!related) return;
+            if (related.type === "checkbox") {
+              related.checked = Boolean(Number(value));
+            } else {
+              related.value = value ?? "";
+            }
+          });
+          input.closest("form")?.dispatchEvent(new Event("input", { bubbles: true }));
+        } catch (error) {
+          itemFeedback.textContent = error.message || "Could not load item details.";
+        }
       });
     }
 

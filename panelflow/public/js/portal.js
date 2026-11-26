@@ -389,14 +389,12 @@ ${(doc.items && doc.items.length) ? `
         btn.disabled = true;
         btn.textContent = "Applying…";
         try {
-          await call("frappe.model.workflow.apply_workflow",
-    "erpnext.controllers.taxes_and_totals.calculate_taxes_and_totals",
-    "erpnext.stock.get_item_details.calculate_taxes_and_totals", {
+          await call("frappe.model.workflow.apply_workflow", {
             doc: JSON.stringify(doc),
             action,
           });
+          await renderRecordView(doctype, doc.name);
           toast(`Action "${action}" applied.`);
-          location.hash = linkFor(doctype, doc.name);
         } catch (error) {
           toast(error.message, true);
           btn.disabled = false;
